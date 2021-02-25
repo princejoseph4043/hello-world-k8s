@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: helloworld
+        image: 897585983198.dkr.ecr.us-east-1.amazonaws.com/apache-alpine:latest
+        ports:
+        - name: apache-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: apache-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: apache-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 30

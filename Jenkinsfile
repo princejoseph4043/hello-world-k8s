@@ -18,4 +18,16 @@ pipeline {
             }
         }
     }
+
+    stage ('Docker_Build') {
+            steps {
+                \\ Build the docker image
+                sh'''
+                    # Build the image
+                    $(aws ecr get-login --region eu-west-1 --profile global --no-include-email)
+                    cd docker
+                    docker build . -t apache-alpine
+                '''
+            }
+        }
 }

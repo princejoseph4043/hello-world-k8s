@@ -17,8 +17,7 @@ pipeline {
 
             }
         }
-    }
-
+    
     stage ('Docker_Build') {
             steps {
                 sh '''cd docker

@@ -21,7 +21,8 @@ pipeline {
 
     stage ('Docker_Build') {
             steps {
-        sh "docker build -t apache-alpine ."
+                sh '''cd docker
+                docker build -t apache-alpine .'''
+            }
     }
-        }
 }

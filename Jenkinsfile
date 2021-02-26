@@ -2,6 +2,8 @@ pipeline {
     agent {
         node {
             label 'slave01'
+            def ecRegistry      = "https://122910936396.dkr.ecr.us-east-1.amazonaws.com"
+            def remoteImageTag  = "v_${BUILD_NUMBER}"
         }
     }
     
@@ -24,6 +26,14 @@ pipeline {
                 docker build -t apache-alpine .'''
             }
     }
-}
+
+    stage("Docker push") {
+    docker.withRegistry(ecRegistry, "ecr:us-east-1:aws-ecr-credential") {
+          docker.image("apache-alpine:${remoteImageTag}").push(remoteImageTag)
+    }
+    
+    }
+
+    }
 
 }

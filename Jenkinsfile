@@ -39,6 +39,7 @@ pipeline {
         stage ('Deploy_K8S') {
              steps {
 //                    withCredentials([string(credentialsId: "aws-login-credentials", variable: 'ARGOCD_AUTH_TOKEN')]) {
+                      withCredentials([string(variable: 'ARGOCD_AUTH_TOKEN')]) {  
                         sh '''
                         ARGOCD_SERVER="a124d6af24d234dd5889feb1735904cb-1188587285.us-east-1.elb.amazonaws.com"
                         APP_NAME="first-demo"

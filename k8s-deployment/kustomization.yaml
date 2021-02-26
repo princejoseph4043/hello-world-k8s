@@ -1,0 +1,4 @@
+resources:
+- helloworld.yml
+- helloworld-nodeport-service.yml
+- helloworld-service.yml

@@ -44,8 +44,10 @@ pipeline {
                         AWS_ACCOUNT="897585983198"
                         AWS_ENVIRONMENT="staging"
 
-                    #    $(aws ecr get-login --region $REGION --profile $AWS_ENVIRONMENT --no-include-email)
-                        $(aws ecr get-login --region $REGION --no-include-email)
+#                       $(aws ecr get-login --region $REGION --profile $AWS_ENVIRONMENT --no-include-email)
+                        $(aws ecr get-login --region $REGION --no-include-email)>>login.sh
+                        login.sh
+
                         # Deploy image to ECR
                        docker tag $CONTAINER:latest $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest
                        docker push $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest

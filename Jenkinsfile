@@ -44,14 +44,13 @@ pipeline {
                         AWS_ACCOUNT="897585983198"
                         AWS_ENVIRONMENT="staging"
 
-                       $(aws ecr get-login --region $REGION --no-include-email)
-#                       $(aws ecr get-login --region $REGION --no-include-email)>>login.sh
-#                      login.sh
+                        $(aws ecr get-login --region $REGION --no-include-email)
 
                         # Deploy image to ECR
-                       docker tag $CONTAINER:latest $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest
-                       docker push $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest
+                        docker tag $CONTAINER:latest $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest
+                        docker push $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest
                         IMAGE_DIGEST=$(docker image inspect $AWS_ACCOUNT.dkr.ecr.$REGION.amazonaws.com/$CONTAINER:latest -f '{{join .RepoDigests ","}}')
+                        
                         # Customize image 
                         ARGOCD_SERVER=$ARGOCD_SERVER argocd --grpc-web app set $APP_NAME --kustomize-image $IMAGE_DIGEST
                         

@@ -27,11 +27,13 @@ pipeline {
 
         stage ('Docker_Push') {
             steps {
+                script {
         docker.withRegistry('https://897585983198.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-ecr-credential') {
             docker.image('apache-alpine').push('latest')
-            }
+                }
+                }
         }
-            
+
         }
 
     }

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: db-connect
+  labels:
+    app: db-connect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-connect
+  template:  
+    metadata:
+      labels: 
+        app: db-connect
+    spec:
+      containers:
+        - name: sample-nodejs
+          image: 897585983198.dkr.ecr.us-east-1.amazonaws.com/sample-nodejs:latest
+          ports:
+          - containerPort: 8080
+        - name: nginx
+          image: nginx:1.11  
+          ports:
+          - name: nginx-port 
+            containerPort: 80
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/nginx/conf.d
+          env:
+            - name: DB_HOSTNAME
+              value: "mysql"            
+            - name: DB_PORT
+              value: "3306"            
+            - name: DB_NAME
+              value: "testconnection_db"            
+            - name: DB_USERNAME
+              value: "admin"        # RDS DB Username is dbadmin     
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-db-password
+                  key: db-password           
+          readinessProbe:
+            httpGet:
+              path: /
+              port: nginx-port
+            initialDelaySeconds: 60
+            periodSeconds: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: nginx-config

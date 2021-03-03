@@ -19,17 +19,9 @@ spec:
           image: 897585983198.dkr.ecr.us-east-1.amazonaws.com/sample-nodejs:latest
           ports:
           - containerPort: 8080
-        - name: nginx
-          image: nginx:1.11  
-          ports:
-          - name: nginx-port 
-            containerPort: 80
-          volumeMounts:
-          - name: config-volume
-            mountPath: /etc/nginx/conf.d
           env:
             - name: DB_HOSTNAME
-              value: "mysql"            
+              value: "k8s-connection-test.clskqjhhikmc.us-east-1.rds.amazonaws.com"
             - name: DB_PORT
               value: "3306"            
             - name: DB_NAME
@@ -40,7 +32,15 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: mysql-db-password
-                  key: db-password           
+                  key: db-password
+        - name: nginx
+          image: nginx:1.11  
+          ports:
+          - name: nginx-port 
+            containerPort: 80
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/nginx/conf.d
           readinessProbe:
             httpGet:
               path: /

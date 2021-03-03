@@ -5,8 +5,8 @@ metadata:
   namespace: default
 spec:
   ports:
-  - port: 32001
-    nodePort: 32001
+  - port: 32002
+    nodePort: 32002
     targetPort: nginx-port
     protocol: TCP
   selector:
